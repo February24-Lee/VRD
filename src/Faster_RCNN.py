@@ -2,7 +2,7 @@ import torch, torchvision
 from torchvision.models.detection import FasterRCNN
 from torchvision.models.detection.rpn import AnchorGenerator
 from torchvision.ops import MultiScaleRoIAlign
-from torch import optim
+from torch import optim, nn
 
 from torchvision.models.vgg import vgg16
 
@@ -16,8 +16,8 @@ class fasterRCNN(pl.LightningModule):
     def __init__(self,
                  backbone : nn.Module = vgg16().features,
                  backbone_out_channel : int = 512,
-                 anachor_size : Tuple(Tuple(int)) = ((128, 256, 512)),
-                 anachor_ratio : Tuple(Tuple(float)) = ((0.5, 1, 2)),
+                 anachor_size = ((128, 256, 512)),
+                 anachor_ratio  = ((0.5, 1, 2)),
                  roi_output_size : int = 7,
                  roi_sampling_ratio : int = 2,
                  num_classes : int = 100,
@@ -45,9 +45,9 @@ class fasterRCNN(pl.LightningModule):
                                 box_roi_pool=roi_pooler)
         
         
-    def setup(self, stage):
-        self.logger.experiment.log_hyperparams(self.hparams)
-        self.looger.experiment.set_model_graph(self.model)
+#    def setup(self, stage):
+#        self.logger.experiment.log_hyperparams(self.hparams)
+#        self.logger.experiment.set_model_graph(self.model)
         
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         if self.model.training :
@@ -79,7 +79,8 @@ class fasterRCNN(pl.LightningModule):
     
     def share_step(self, batch, batch_idx):
         img, _, _, labels, bbs = batch
-        
+        bbs = bbs.squeeze(0)
+        labels = labels.squeeze(0)
         self.model.train()
         loss = self.model(img,
                           [{'boxes' : bbs,

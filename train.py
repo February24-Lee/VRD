@@ -53,8 +53,8 @@ if __name__ == '__main__':
     # --- Model
     model = fasterRCNN(
         backbone=backbone_dic[config['backbone']](pretrained=True).features,
-        anachor_size= ((128, 256, 512)),
-        anachor_ratio = ((0.5, 1, 2)),
+        anachor_size= ((64, 128, 256),),
+        anachor_ratio = ((0.5, 1, 2),),
         **config['model_params'])
     
     # --- Trainer
