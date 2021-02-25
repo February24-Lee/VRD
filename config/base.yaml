@@ -18,7 +18,7 @@ model_params:
   backbone_out_channel: 512
   roi_output_size: 7
   roi_sampling_ratio: 2
-  num_classes: 100
+  num_classes: 101
   optim_rate: 0.001
   optim_moment: 0.9
   optim_weight_decay: 0.0005
@@ -35,5 +35,9 @@ logger_params:
   api_key: "U4sjQMNfZQO8aKBrkzrHLjMld"
   project_name: "vrd"
   workspace: "february24-lee"
+  auto_output_logging: "native"
   
 random_seed : 777
+
+trainer_params:
+  max_epochs: 1000
