@@ -1,14 +1,14 @@
 DataModule_params:
-  train_vrd_object_list_path: '../../../Share_data/VRD/objects.json'
-  train_vrd_annotations_json_path: '../../../Share_data/VRD/annotations_train.json'
-  train_sg_annotations_json_path: '../../../Share_data/VRD/sg_dataset/sg_train_annotations.json'
-  train_img_folder_path: '../../../Share_data/VRD/sg_dataset/sg_train_images'
+  train_vrd_object_list_path: '../../../../Share_data/VRD/objects.json'
+  train_vrd_annotations_json_path: '../../../../Share_data/VRD/annotations_train.json'
+  train_sg_annotations_json_path: '../../../../Share_data/VRD/sg_dataset/sg_train_annotations.json'
+  train_img_folder_path: '../../../../Share_data/VRD/sg_dataset/sg_train_images'
   train_shuffle: True
   train_drop_last: True
-  test_vrd_object_list_path: '../../../Share_data/VRD/objects.json'
-  test_vrd_annotations_json_path: '../../../Share_data/VRD/annotations_test.json'
-  test_sg_annotations_json_path: '../../../Share_data/VRD/sg_dataset/sg_test_annotations.json'
-  test_img_folder_path: '../../../Share_data/VRD/sg_dataset/sg_test_images'
+  test_vrd_object_list_path: '../../../../Share_data/VRD/objects.json'
+  test_vrd_annotations_json_path: '../../../../Share_data/VRD/annotations_test.json'
+  test_sg_annotations_json_path: '../../../../Share_data/VRD/sg_dataset/sg_test_annotations.json'
+  test_img_folder_path: '../../../../Share_data/VRD/sg_dataset/sg_test_images'
   test_shuffle: True
   test_drop_last: True
 
@@ -19,14 +19,14 @@ model_params:
   roi_output_size: 7
   roi_sampling_ratio: 2
   num_classes: 100
-  optim_rate:float : 0.001
+  optim_rate: 0.001
   optim_moment: 0.9
   optim_weight_decay: 0.0005
 
-Modelcheckpont:
+Modelcheckpoint:
   monitor: 'loss'
   save_last: True
-  save_top: 1
+  save_top_k: 1
   mode: 'min'
 
 logger_params:
@@ -34,6 +34,6 @@ logger_params:
   experiment_name: 'base_exp'
   api_key: "U4sjQMNfZQO8aKBrkzrHLjMld"
   project_name: "vrd"
-  workspace: "february24-lee",
+  workspace: "february24-lee"
   
 random_seed : 777

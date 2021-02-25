@@ -16,14 +16,14 @@ class VRD_DataModule(pl.LightningDataModule):
                  train_vrd_annotations_json_path:str,
                  train_sg_annotations_json_path:str,
                  train_img_folder_path:str,
-                 train_shuffle = True,
-                 train_drop_last = True,
                  test_vrd_object_list_path:str,
                  test_vrd_annotations_json_path:str,
                  test_sg_annotations_json_path:str,
                  test_img_folder_path:str,
                  test_shuffle = True,
-                 test_drop_last = True):
+                 test_drop_last = True,
+		 train_shuffle= True,
+		 train_drop_last=True):
         super(VRD_DataModule, self).__init__()
         self.train_ds = VRD_Dataset(train_vrd_object_list_path,
                                         train_vrd_annotations_json_path,
@@ -43,7 +43,7 @@ class VRD_DataModule(pl.LightningDataModule):
                           shuffle=self.train_shuffle,
                           drop_last=self.train_drop_last)
     
-    def test_dataloader(self):
+    def val_dataloader(self):
         return DataLoader(self.test_ds, 
                           shuffle=self.test_shuffle,
                           drop_last=self.test_drop_last)
