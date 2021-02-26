@@ -61,7 +61,8 @@ if __name__ == '__main__':
     runner = pl.Trainer(default_root_dir=f"{comet_logger.save_dir}",
                     gpus=args.gpus,
                     logger=comet_logger,
-                    callbacks=[callback_save_model])
+                    callbacks=[callback_save_model],
+                    **config['trainer_params'])
     
     runner.fit(model, dataloader)
 

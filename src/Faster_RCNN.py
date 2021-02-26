@@ -45,9 +45,9 @@ class fasterRCNN(pl.LightningModule):
                                 box_roi_pool=roi_pooler)
         
         
-#    def setup(self, stage):
+    def setup(self, stage):
 #        self.logger.experiment.log_hyperparams(self.hparams)
-#        self.logger.experiment.set_model_graph(self.model)
+        self.logger.experiment.set_model_graph(str(self.model))
         
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         if self.model.training :
