@@ -23,7 +23,8 @@ class fasterRCNN(pl.LightningModule):
                  num_classes : int = 100,
                  optim_rate:float = 0.001,
                  optim_moment:float = 0.9,
-                 optim_weight_decay:float = 0.0005):
+                 optim_weight_decay:float = 0.0005,
+                 logger_type:str = 'test_tube'):
         super(fasterRCNN, self).__init__()
         self.save_hyperparameters()
         self.optim_rate = optim_rate
@@ -38,7 +39,7 @@ class fasterRCNN(pl.LightningModule):
         roi_pooler =  MultiScaleRoIAlign(featmap_names=['0'],
                                          output_size=roi_output_size,
                                          sampling_ratio=roi_sampling_ratio)
-        
+        self.logger_type = logger_type
         self.model = FasterRCNN(backbone,
                                 num_classes=num_classes,
                                 rpn_anchor_generator=anachor_generator,
@@ -47,7 +48,9 @@ class fasterRCNN(pl.LightningModule):
         
     def setup(self, stage):
 #        self.logger.experiment.log_hyperparams(self.hparams)
-        self.logger.experiment.set_model_graph(str(self.model))
+        if self.logger_type == 'comet':
+            self.logger.experiment.set_model_graph(str(self.model))
+        
         
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         if self.model.training :

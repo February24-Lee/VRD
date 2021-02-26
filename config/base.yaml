@@ -29,14 +29,21 @@ Modelcheckpoint:
   save_top_k: 1
   mode: 'min'
 
-logger_params:
+logger_params_comet:
   save_dir: 'logs/'
   experiment_name: 'base_exp'
   api_key: "U4sjQMNfZQO8aKBrkzrHLjMld"
   project_name: "vrd"
   workspace: "february24-lee"
   auto_output_logging: "native"
-  
+
+logger_params_test_tube:
+  save_dir: 'logs/'
+  name: 'base_exp'
+  debug: False
+  create_git_tag: False
+
+
 random_seed : 777
 
 trainer_params:

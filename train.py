@@ -11,7 +11,7 @@ import random
 import numpy as np
 
 
-from pytorch_lightning.loggers import CometLogger
+from pytorch_lightning.loggers import CometLogger, TestTubeLogger
 
 backbone_dic = {'vgg16':vgg16}
 
@@ -24,6 +24,12 @@ parser.add_argument('--gpus', '-g',
                     dest='gpus',
                     type=int,
                     default=1)
+parser.add_argument('--logger', '-l',
+                    dest='logger',
+                    type=str,
+                    default='test_tube')
+
+
 
 args = parser.parse_args()
 with open(args.filename, 'r') as f:
@@ -44,8 +50,12 @@ random.seed(random_seed)
 callback_save_model = pl.callbacks.ModelCheckpoint(**config['Modelcheckpoint'])
 
 # --- Loger
-comet_logger = CometLogger(**config['logger_params'])
-
+if args.logger == 'test_tube':
+    logger = TestTubeLogger(**config['logger_params'])
+elif args.logger == 'comet':
+    logger = CometLogger(**config['logger_params_comet'])
+    
+    
 if __name__ == '__main__':
     # --- DataLoader
     dataloader = VRD_DataModule(**config['DataModule_params'])
@@ -55,12 +65,13 @@ if __name__ == '__main__':
         backbone=backbone_dic[config['backbone']](pretrained=True).features,
         anachor_size= ((64, 128, 256),),
         anachor_ratio = ((0.5, 1, 2),),
+        logger_type= args.logger,
         **config['model_params'])
     
     # --- Trainer
-    runner = pl.Trainer(default_root_dir=f"{comet_logger.save_dir}",
+    runner = pl.Trainer(default_root_dir=f"{logger.save_dir}",
                     gpus=args.gpus,
-                    logger=comet_logger,
+                    logger=logger,
                     callbacks=[callback_save_model],
                     **config['trainer_params'])
     
