@@ -59,7 +59,7 @@ class fasterRCNN(pl.LightningModule):
     
     def training_step(self, batch, batch_idx):
         loss = self.share_step(batch, batch_idx)
-        self.logger.experiment.log_metrics({key : val.item() for key, val in loss.items()},
+        self.logger.log_metrics({key : val.item() for key, val in loss.items()},
                                            step=self.global_step)
         return loss
     
@@ -72,12 +72,12 @@ class fasterRCNN(pl.LightningModule):
         avg_loss_box_reg = torch.stack([x['loss_box_reg'] for x in outputs]).mean()
         avg_loss_objectness = torch.stack([x['loss_objectness'] for x in outputs]).mean()
         avg_loss_rpn_box_reg = torch.stack([x['loss_rpn_box_reg'] for x in outputs]).mean()
-        self.logger.experiment.log_metrics({'avg_loss_sum' : avg_loss_sum.item(),
+        self.logger.log_metrics({'avg_loss_sum' : avg_loss_sum.item(),
                                             'avg_loss_classifier':avg_loss_classifier.item(),
                                             'avg_loss_box_reg' : avg_loss_box_reg.item(),
                                             'avg_loss_objectness':avg_loss_objectness.item(),
                                             'avg_loss_rpn_box_reg':avg_loss_rpn_box_reg.item()},
-                                           epoch=self.current_epoch)
+                                           step=self.current_epoch)
         return 
     
     def share_step(self, batch, batch_idx):

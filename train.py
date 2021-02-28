@@ -51,7 +51,7 @@ callback_save_model = pl.callbacks.ModelCheckpoint(**config['Modelcheckpoint'])
 
 # --- Loger
 if args.logger == 'test_tube':
-    logger = TestTubeLogger(**config['logger_params'])
+    logger = TestTubeLogger(**config['logger_params_test_tube'])
 elif args.logger == 'comet':
     logger = CometLogger(**config['logger_params_comet'])
     
