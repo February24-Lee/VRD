@@ -85,8 +85,6 @@ class fasterRCNN(pl.LightningModule):
         batch_targets = []
         for batch_item in batch:
             img, _, _, labels, bbs = batch_item
-            bbs = bbs.squeeze(0)
-            labels = labels.squeeze(0)
             batch_img.append(img)
             batch_targets.append({'boxes' : bbs,
                             'labels' : labels})
