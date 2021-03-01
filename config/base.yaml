@@ -11,6 +11,8 @@ DataModule_params:
   test_img_folder_path: '../../../../Share_data/VRD/sg_dataset/sg_test_images'
   test_shuffle: True
   test_drop_last: True
+  train_batch_size: 16
+  test_batch_size: 16
 
 backbone: 'vgg16'
 
@@ -47,4 +49,4 @@ logger_params_test_tube:
 random_seed : 777
 
 trainer_params:
-  max_epochs: 1000
+  max_epochs: 10

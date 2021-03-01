@@ -81,13 +81,18 @@ class fasterRCNN(pl.LightningModule):
         return 
     
     def share_step(self, batch, batch_idx):
-        img, _, _, labels, bbs = batch
-        bbs = bbs.squeeze(0)
-        labels = labels.squeeze(0)
+        batch_img = []
+        batch_targets = []
+        for batch_item in batch:
+            img, _, _, labels, bbs = batch_item
+            bbs = bbs.squeeze(0)
+            labels = labels.squeeze(0)
+            batch_img.append(img)
+            batch_targets.append({'boxes' : bbs,
+                            'labels' : labels})
+        
         self.model.train()
-        loss = self.model(img,
-                          [{'boxes' : bbs,
-                            'labels' : labels},])
+        loss = self.model(batch_img,batch_targets)
         loss_sum = reduce(lambda x, y : x+y, list(loss.values()))
         return dict(**{'loss' : loss_sum}, **loss)
     

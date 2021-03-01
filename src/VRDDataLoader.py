@@ -9,7 +9,6 @@ from PIL import Image
 from typing import Tuple
 import json
 
-
 class VRD_DataModule(pl.LightningDataModule):
     def __init__(self,
                  train_vrd_object_list_path:str,
@@ -22,8 +21,10 @@ class VRD_DataModule(pl.LightningDataModule):
                  test_img_folder_path:str,
                  test_shuffle = True,
                  test_drop_last = True,
-		 train_shuffle= True,
-		 train_drop_last=True):
+                 train_shuffle= True,
+                 train_drop_last=True,
+                 train_batch_size : int = 16,
+                 test_batch_size : int = 16):
         super(VRD_DataModule, self).__init__()
         self.train_ds = VRD_Dataset(train_vrd_object_list_path,
                                         train_vrd_annotations_json_path,
@@ -37,15 +38,21 @@ class VRD_DataModule(pl.LightningDataModule):
         self.train_shuffle =train_shuffle
         self.test_drop_last = test_drop_last
         self.train_drop_last = train_drop_last
+        self.train_batch_size = train_batch_size
+        self.test_batch_size = test_batch_size
     
     def train_dataloader(self):
         return DataLoader(self.train_ds, 
                           shuffle=self.train_shuffle,
+                          batch_size=self.train_batch_size,
+                          collate_fn= lambda x : x,
                           drop_last=self.train_drop_last)
     
     def val_dataloader(self):
         return DataLoader(self.test_ds, 
                           shuffle=self.test_shuffle,
+                          batch_size=self.test_batch_size,
+                          collate_fn = lambda x : x,
                           drop_last=self.test_drop_last)
 
 
