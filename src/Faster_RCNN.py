@@ -24,7 +24,12 @@ class fasterRCNN(pl.LightningModule):
                  optim_rate:float = 0.001,
                  optim_moment:float = 0.9,
                  optim_weight_decay:float = 0.0005,
-                 logger_type:str = 'test_tube'):
+                 logger_type:str = 'test_tube',
+                 rpn_pre_nms_top_n_train=300,
+                rpn_pre_nms_top_n_test=300,
+                rpn_nms_thresh=0.4,
+                rpn_score_thresh=0.05,
+                rpn_fg_iou_thresh=0.7):
         super(fasterRCNN, self).__init__()
         self.save_hyperparameters()
         self.optim_rate = optim_rate
@@ -43,11 +48,16 @@ class fasterRCNN(pl.LightningModule):
         self.model = FasterRCNN(backbone,
                                 num_classes=num_classes,
                                 rpn_anchor_generator=anachor_generator,
-                                box_roi_pool=roi_pooler)
+                                box_roi_pool=roi_pooler,
+                                rpn_pre_nms_top_n_train=rpn_pre_nms_top_n_train,
+                                rpn_pre_nms_top_n_test=rpn_pre_nms_top_n_test,
+                                rpn_nms_thresh=rpn_nms_thresh,
+                                rpn_score_thresh=rpn_score_thresh,
+                                rpn_fg_iou_thresh=rpn_fg_iou_thresh)
         
         
     def setup(self, stage):
-#        self.logger.experiment.log_hyperparams(self.hparams)
+        self.logger.experiment.log_hyperparams(self.hparams)
         if self.logger_type == 'comet':
             self.logger.experiment.set_model_graph(str(self.model))
         
