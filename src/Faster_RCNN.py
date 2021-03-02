@@ -14,21 +14,21 @@ from functools import reduce
 
 class fasterRCNN(pl.LightningModule):
     def __init__(self,
-                 backbone : nn.Module = vgg16().features,
-                 backbone_out_channel : int = 512,
-                 anachor_size = ((128, 256, 512)),
-                 anachor_ratio  = ((0.5, 1, 2)),
-                 roi_output_size : int = 7,
-                 roi_sampling_ratio : int = 2,
-                 num_classes : int = 100,
-                 optim_rate:float = 0.001,
-                 optim_moment:float = 0.9,
-                 optim_weight_decay:float = 0.0005,
-                 logger_type:str = 'test_tube',
-                 rpn_pre_nms_top_n_train=300,
+                backbone : nn.Module = vgg16().features,
+                backbone_out_channel : int = 512,
+                anachor_size = ((128, 256, 512)),
+                anachor_ratio  = ((0.5, 1, 2)),
+                roi_output_size : int = 7,
+                roi_sampling_ratio : int = 2,
+                num_classes : int = 100,
+                optim_rate:float = 0.001,
+                optim_moment:float = 0.9,
+                optim_weight_decay:float = 0.0005,
+                logger_type:str = 'test_tube',
+                rpn_pre_nms_top_n_train=300,
                 rpn_pre_nms_top_n_test=300,
                 rpn_nms_thresh=0.4,
-                rpn_score_thresh=0.05,
+                box_score_thresh=0.05,
                 rpn_fg_iou_thresh=0.7):
         super(fasterRCNN, self).__init__()
         self.save_hyperparameters()
@@ -52,7 +52,7 @@ class fasterRCNN(pl.LightningModule):
                                 rpn_pre_nms_top_n_train=rpn_pre_nms_top_n_train,
                                 rpn_pre_nms_top_n_test=rpn_pre_nms_top_n_test,
                                 rpn_nms_thresh=rpn_nms_thresh,
-                                rpn_score_thresh=rpn_score_thresh,
+                                box_score_thresh=box_score_thresh,
                                 rpn_fg_iou_thresh=rpn_fg_iou_thresh)
         
         
