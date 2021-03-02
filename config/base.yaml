@@ -24,6 +24,11 @@ model_params:
   optim_rate: 0.001
   optim_moment: 0.9
   optim_weight_decay: 0.0005
+  rpn_pre_nms_top_n_train: 300
+  rpn_pre_nms_top_n_test: 300
+  rpn_nms_thresh: 0.4
+  rpn_score_thresh: 0.05
+  rpn_fg_iou_thresh: 0.7
 
 Modelcheckpoint:
   monitor: 'loss'
